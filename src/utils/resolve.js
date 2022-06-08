@@ -1,3 +1,9 @@
+/**
+ * Resolves any promise-api calls
+ *
+ * @param {Promise} promise
+ * @returns object
+ */
 export const resolve = async (promise) => {
   const resolved = {
     data: null,
