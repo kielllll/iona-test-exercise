@@ -22,5 +22,11 @@ module.exports = {
     'linebreak-style': [0, 'always'],
     'arrow-body-style': [0, 'always'],
     'react/function-component-definition': [0, 'always'],
+    'react/forbid-prop-types': [0, 'always'],
+    'arrow-parens': [0, 'always'],
+    'react/jsx-props-no-spreading': [0, 'always'],
+    'operator-linebreak': [0, 'always'],
+    'react/require-default-props': [0, 'always'],
+    'no-alert': [0, 'always']
   },
 }
