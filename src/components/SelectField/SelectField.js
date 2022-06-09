@@ -1,6 +1,8 @@
 import React from 'react'
-import Form from 'react-bootstrap/Form'
 import PropTypes from 'prop-types'
+
+// Components
+import Form from 'react-bootstrap/Form'
 
 const SelectField = ({ options, defaultText, disabled, onChange, props }) => (
   <Form.Select disabled={disabled} onChange={onChange} {...props}>

@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 
 // Components
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { SelectField } from '../../components/SelectField'
+import { CatCard } from '../../components/CatCard'
 
 // Utils
 import { listCatBreed, listCatsByBreed } from '../../api/cat'
@@ -36,10 +39,21 @@ const Home = () => {
   const handleSelect = async (e) => {
     const breed = e.target.value
     if (!breed) return
+
     const { data, error } = await listCatsByBreed(breed)
     if (error) alert('An error has occurred while processing the request.')
-    setCats(data)
+
+    // parse only the necessary properties
+    setCats(data.map(({ url }) => ({ image: url })))
   }
+
+  const renderCatCards = () =>
+    cats?.length > 0 &&
+    cats.map(({ image }) => (
+      <Col xs={3}>
+        <CatCard image={image} onClick={() => console.log('clicked')} />
+      </Col>
+    ))
 
   return (
     <div>
@@ -51,6 +65,7 @@ const Home = () => {
         disabled={!catBreeds}
         onChange={handleSelect}
       />
+      <Row>{renderCatCards()}</Row>
       <p>No cats available</p>
       <Button variant="success">Load more</Button>
     </div>
