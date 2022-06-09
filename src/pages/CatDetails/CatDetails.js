@@ -17,7 +17,7 @@ const CatDetails = () => {
   useEffectOnce(() => {
     getCatDetails(id).then(({ data, error }) => {
       // Short-circuit if an error has occurred
-      if (error) alert('An error has occurred while processing the request.')
+      if (error) alert('Apologies but we could not load new cats for you at this time! Miau!')
 
       setCatDetails(data)
     })

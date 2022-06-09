@@ -30,6 +30,8 @@ module.exports = {
     'no-alert': [0, 'always'],
     'implicit-arrow-linebreak': [0, 'always'],
     'consistent-return': [0, 'always'],
-    'no-return-assign': [0, 'always']
+    'no-return-assign': [0, 'always'],
+    'nonblock-statement-body-position': [0, 'always'],
+    curly: [0, 'always'],
   },
 }

@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 
 const CatCard = ({ image, id }) => (
-  <Card style={{ maxWidth: '20vw' }}>
+  <Card style={{ maxWidth: '20vw', marginBottom: '12px' }}>
     <Card.Img variant="top" src={image} />
     <Card.Body>
       <Link to={`/${id}`} state={{ id }}>
