@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 // Components
 import styled from 'styled-components'
@@ -17,12 +18,42 @@ const Home = () => {
   const { state, func } = useContext(GlobalAppContext)
   const { catBreeds, cats, value, page } = state
   const { setCatBreeds, setCats, setValue, setPage } = func
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  /**
+   * Calls the Cat API to pull the list of cats by breed
+   *
+   * @param {string} breed
+   */
+  const getCatsbyBreed = async (breed) => {
+    const { data, error } = await listCatsByBreed(breed)
+    if (error)
+      return alert(
+        'Apologies but we could not load new cats for you at this time! Miau!'
+      )
+
+    // exit if no result
+    if (data.length === 0)
+      return alert(
+        'Apologies but we could not find the breed! Please select another one from the dropdown. Miau!'
+      )
+
+    // parse only the necessary properties
+    setCats(data.map(({ url, id }) => ({ image: url, id })))
+    setValue(breed)
+    setSearchParams({ breed })
+    // reset as selecting cats by breed always start at page 1
+    setPage(1)
+  }
 
   // Only run once when the page has been loaded
   useEffectOnce(() => {
     listCatBreed().then(({ data, error }) => {
       // Short-circuit if an error has occurred
-      if (error) alert('An error has occurred while processing the request.')
+      if (error)
+        return alert(
+          'Apologies but we could not load new cats for you at this time! Miau!'
+        )
 
       // parse only the necessary properties
       setCatBreeds(
@@ -35,6 +66,11 @@ const Home = () => {
     })
   }, [])
 
+  useEffectOnce(() => {
+    const breed = searchParams.get('breed')
+    if (breed) return getCatsbyBreed(breed)
+  }, [searchParams])
+
   /**
    * Event handler of select input field
    *
@@ -45,30 +81,23 @@ const Home = () => {
     if (!breed) {
       setCats([])
       setValue('')
+      setSearchParams('')
       return
     }
 
-    const { data, error } = await listCatsByBreed(breed)
-    if (error)
-      return alert('Apologies but we could not load new cats for you at this time! Miau!')
-
-    // parse only the necessary properties
-    setCats(data.map(({ url, id }) => ({ image: url, id })))
-    setValue(breed)
-    // reset as selecting cats by breed always start at page 1
-    setPage(1)
+    await getCatsbyBreed(breed)
   }
 
   /**
    * Event handler of load more button
-   *
-   * @param {object} e
    */
   const handleClick = async () => {
     const nextPage = page + 1
     const { data, error } = await listCatsByBreed(value, nextPage)
     if (error)
-      return alert('Apologies but we could not load new cats for you at this time! Miau!')
+      return alert(
+        'Apologies but we could not load new cats for you at this time! Miau!'
+      )
 
     // parse only the necessary properties
     setCats([
@@ -101,6 +130,14 @@ const Home = () => {
     padding: 10px 0px;
   `
 
+  const ButtonSection = styled(Section)`
+    justify-content: center;
+  `
+
+  const LoadMoreButton = styled(Button)`
+    width: 40%;
+  `
+
   return (
     <div>
       <Section>
@@ -125,15 +162,15 @@ const Home = () => {
         </Section>
       )}
       {cats.length % 10 === 0 && (
-        <Section>
-          <Button
+        <ButtonSection>
+          <LoadMoreButton
             variant="success"
             onClick={handleClick}
             disabled={cats.length === 0}
           >
             Load more
-          </Button>
-        </Section>
+          </LoadMoreButton>
+        </ButtonSection>
       )}
     </div>
   )
