@@ -12,10 +12,12 @@ function App() {
   return (
     <Container fluid="xs">
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cat" element={<CatDetails />} />
-        </Routes>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:id" element={<CatDetails />} />
+          </Routes>
+        </div>
       </Router>
     </Container>
   )

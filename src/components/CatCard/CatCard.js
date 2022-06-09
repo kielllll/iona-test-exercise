@@ -4,21 +4,22 @@ import PropTypes from 'prop-types'
 // Components
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom'
 
-const CatCard = ({ image, handleClick }) => (
-  <Card style={{ width: '20vw' }}>
+const CatCard = ({ image, id }) => (
+  <Card style={{ maxWidth: '20vw' }}>
     <Card.Img variant="top" src={image} />
     <Card.Body>
-      <Button varian="primary" onClick={handleClick}>
-        View Details
-      </Button>
+      <Link to={`/${id}`} state={{ id }}>
+        <Button variant="primary">View Details</Button>
+      </Link>
     </Card.Body>
   </Card>
 )
 
 CatCard.propTypes = {
   image: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 }
 
 export default CatCard

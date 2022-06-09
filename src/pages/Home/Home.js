@@ -44,14 +44,14 @@ const Home = () => {
     if (error) alert('An error has occurred while processing the request.')
 
     // parse only the necessary properties
-    setCats(data.map(({ url }) => ({ image: url })))
+    setCats(data.map(({ url, id }) => ({ image: url, id })))
   }
 
   const renderCatCards = () =>
     cats?.length > 0 &&
-    cats.map(({ image }) => (
-      <Col xs={3}>
-        <CatCard image={image} onClick={() => console.log('clicked')} />
+    cats.map(({ image, id }) => (
+      <Col md={3} xs={6} key={id}>
+        <CatCard image={image} id={id} />
       </Col>
     ))
 
